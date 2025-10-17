@@ -95,19 +95,42 @@ export const SearchProvider = ({ children }) => {
     })));
   };
 
-  // 执行搜索
-  const performSearch = (query) => {
+  // 生成搜索URL
+  const generateSearchUrl = (query) => {
+    if (!query || !query.trim()) return '';
     const platform = platforms.find(p => p.id === selectedPlatform);
-    if (platform && query.trim()) {
-      // 替换URL中的{query}占位符为实际搜索词，并进行URL编码
-      const searchUrl = platform.url.replace('{query}', encodeURIComponent(query.trim()));
-      // 使用Electron的shell API打开URL（通过preload暴露的API）
-      if (window.electronAPI && window.electronAPI.openExternal) {
-        window.electronAPI.openExternal(searchUrl);
+    return platform ? platform.url.replace('{query}', encodeURIComponent(query.trim())) : '';
+  };
+
+  // 执行搜索 - 使用默认浏览器打开
+  const performSearch = async (query) => {
+    const searchUrl = generateSearchUrl(query);
+    if (!searchUrl) return;
+
+    try {
+      if (typeof window !== 'undefined' && window.electronAPI?.openExternal) {
+        await window.electronAPI.openExternal(searchUrl);
       } else {
-        // 降级方案：在默认浏览器中打开
         window.open(searchUrl, '_blank');
       }
+    } catch {
+      window.open(searchUrl, '_blank');
+    }
+  };
+
+  // 执行搜索 - 使用内部浏览器打开
+  const performSearchInInternalBrowser = async (query) => {
+    const searchUrl = generateSearchUrl(query);
+    if (!searchUrl) return;
+
+    try {
+      if (typeof window !== 'undefined' && window.electronAPI?.openInternalBrowser) {
+        await window.electronAPI.openInternalBrowser(searchUrl);
+      } else {
+        window.open(searchUrl, '_blank');
+      }
+    } catch {
+      window.open(searchUrl, '_blank');
     }
   };
 
@@ -120,7 +143,8 @@ export const SearchProvider = ({ children }) => {
     addPlatform,
     deletePlatform,
     setDefaultPlatform,
-    performSearch
+    performSearch,
+    performSearchInInternalBrowser
   };
 
   return (
