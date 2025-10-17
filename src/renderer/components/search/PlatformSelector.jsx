@@ -21,9 +21,6 @@ const PlatformSelector = () => {
             onClick={() => handlePlatformSelect(platform.id)}
           >
             <span className="platform-name">{platform.name}</span>
-            {platform.isDefault && (
-              <span className="default-badge">默认</span>
-            )}
           </div>
         ))}
       </div>

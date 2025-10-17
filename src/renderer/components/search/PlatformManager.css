@@ -140,32 +140,20 @@
   color: #333;
 }
 
-.default-indicator {
-  font-size: 12px;
-  color: #888;
-}
-
 .platform-actions {
   display: flex;
   gap: 8px;
 }
 
-.set-default-btn, .delete-btn {
+.delete-btn {
   padding: 4px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
   transition: all 0.2s ease;
-}
-
-.set-default-btn {
-  background-color: #ffc107;
-  color: #333;
-}
-
-.set-default-btn:hover {
-  background-color: #ffb300;
+  background-color: #f44336;
+  color: white;
 }
 
 .delete-btn {

@@ -49,8 +49,3 @@
   padding: 2px 6px;
   border-radius: 10px;
 }
-
-.platform-option:not(.selected) .default-badge {
-  background-color: #ffd700;
-  color: #333;
-}

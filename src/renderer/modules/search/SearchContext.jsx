@@ -22,11 +22,11 @@ export const SearchProvider = ({ children }) => {
     }
     // 默认的搜索平台
     return [
-      { id: 1, name: 'Bing', url: 'https://www.bing.com/search?q={query}', isDefault: true },
-      { id: 2, name: 'Google', url: 'https://www.google.com/search?q={query}', isDefault: false },
-      { id: 3, name: '京东', url: 'https://search.jd.com/Search?keyword={query}', isDefault: false },
-      { id: 4, name: '拼多多', url: 'https://mobile.yangkeduo.com/search_result.html?search_key={query}', isDefault: false },
-      { id: 5, name: '淘宝', url: 'https://s.taobao.com/search?q={query}', isDefault: false }
+      { id: 1, name: 'Bing', url: 'https://www.bing.com/search?q={query}' },
+      { id: 2, name: 'Google', url: 'https://www.google.com/search?q={query}' },
+      { id: 3, name: '京东', url: 'https://search.jd.com/Search?keyword={query}' },
+      { id: 4, name: '拼多多', url: 'https://mobile.yangkeduo.com/search_result.html?search_key={query}' },
+      { id: 5, name: '淘宝', url: 'https://s.taobao.com/search?q={query}' }
     ];
   });
 
@@ -36,9 +36,8 @@ export const SearchProvider = ({ children }) => {
     if (savedPlatform) {
       return parseInt(savedPlatform);
     }
-    // 默认选择默认平台
-    const defaultPlatform = platforms.find(p => p.isDefault);
-    return defaultPlatform ? defaultPlatform.id : platforms[0].id;
+    // 无法获取当前选中平台时，选择第一个平台
+    return platforms[0].id;
   });
 
   // 搜索关键词
@@ -64,8 +63,7 @@ export const SearchProvider = ({ children }) => {
     const newPlatform = {
       id: Date.now(),
       name,
-      url,
-      isDefault: false
+      url
     };
     setPlatforms([...platforms, newPlatform]);
     return newPlatform.id;
@@ -87,13 +85,7 @@ export const SearchProvider = ({ children }) => {
     }
   };
 
-  // 设置默认平台
-  const setDefaultPlatform = (id) => {
-    setPlatforms(platforms.map(p => ({
-      ...p,
-      isDefault: p.id === id
-    })));
-  };
+
 
   // 生成搜索URL
   const generateSearchUrl = (query) => {
@@ -142,7 +134,6 @@ export const SearchProvider = ({ children }) => {
     setSearchQuery,
     addPlatform,
     deletePlatform,
-    setDefaultPlatform,
     performSearch,
     performSearchInInternalBrowser
   };

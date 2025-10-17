@@ -3,7 +3,7 @@ import { useSearch } from '../../modules/search/SearchContext';
 import './PlatformManager.css';
 
 const PlatformManager = () => {
-  const { platforms, addPlatform, deletePlatform, setDefaultPlatform } = useSearch();
+  const { platforms, addPlatform, deletePlatform } = useSearch();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newPlatformName, setNewPlatformName] = useState('');
   const [newPlatformUrl, setNewPlatformUrl] = useState('');
@@ -45,11 +45,7 @@ const PlatformManager = () => {
     }
   };
 
-  // 处理设置默认平台
-  const handleSetDefault = (e, id) => {
-    e.stopPropagation(); // 防止触发平台选择
-    setDefaultPlatform(id);
-  };
+
 
   return (
     <div className="platform-manager-container">
@@ -101,18 +97,8 @@ const PlatformManager = () => {
             <li key={platform.id} className="platform-item">
               <div className="platform-info">
                 <span className="platform-name">{platform.name}</span>
-                {platform.isDefault && <span className="default-indicator">(默认)</span>}
               </div>
               <div className="platform-actions">
-                {!platform.isDefault && (
-                  <button 
-                    className="set-default-btn"
-                    onClick={(e) => handleSetDefault(e, platform.id)}
-                    title="设为默认"
-                  >
-                    设为默认
-                  </button>
-                )}
                 <button 
                   className="delete-btn"
                   onClick={() => handleDeletePlatform(platform.id)}
